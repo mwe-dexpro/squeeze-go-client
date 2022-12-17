@@ -27,4 +27,4 @@ jobs:
     - name: Test
       run: go test -v ./...
       env:
-        SQZ_BASE_PATH: https://terstegen.staging.squeeze.one/api/v2
+        SQZ_BASE_PATH: ${{ secrets.SQZ_BASE_PATH }}
