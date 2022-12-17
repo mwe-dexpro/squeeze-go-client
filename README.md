@@ -18,3 +18,10 @@ Add client as dependency:
 ```go
 go get github.com/dexpro-solutions-gmbh/squeeze-go-client
 ```
+
+## Tests
+
+To run tests on this project, use these ENV variables to configure the Squeeze API to be used when testing:
+
+- SQZ_BASE_PATH: The base path of the Squeeze API. Example: `https://your.squeeze.one/api/v2`
+- SQZ_KEY: API key to authenticate with
