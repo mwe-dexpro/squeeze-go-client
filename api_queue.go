@@ -13,12 +13,6 @@ func newQueueApi(client *Client) *QueueApi {
 	return &QueueApi{client: client}
 }
 
-type QueueStepDto struct {
-	Name       string `json:"name"`
-	Count      int    `json:"count"`
-	ErrorCount int    `json:"errorCount"`
-}
-
 func (api *QueueApi) GetQueueSteps() (map[string]*QueueStepDto, *Error) {
 	req, err := api.client.newRequest("GET", "/queue/steps")
 	if err != nil {
