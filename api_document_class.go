@@ -45,6 +45,42 @@ func (api *DocumentClassApi) GetDocumentClasses() ([]*DocumentClassDto, *Error) 
 	return data, nil
 }
 
+type DocumentFieldGroup struct {
+	Id              int    `json:"id"`
+	DocumentClassId int    `json:"documentClassId"`
+	Name            string `json:"name"`
+	Description     string `json:"description"`
+	// removed because these are not actively being used.
+	// Type                  int    `json:"type"`
+	// TableField            string `json:"tableField"`
+	SortOrder             int    `json:"sortOrder"`
+	TranslationKey        string `json:"translationKey"`
+	TranslatedDescription string `json:"translatedDescription"`
+}
+
+func (api *DocumentClassApi) GetAllFieldGroups(documentClassId int) ([]*DocumentFieldGroup, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/fieldGroups", documentClassId))
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data []*DocumentFieldGroup
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return data, nil
+}
+
 type DocumentField struct {
 	Id                    int    `json:"id"`
 	DocumentClassId       int    `json:"documentClassId"`
