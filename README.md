@@ -11,6 +11,16 @@ client.
 problems or questions, feel free to open an issue. We would love to encourage usage of this client and the HTTP
 api of our products in general.
 
+## Versioning
+
+Squeeze has multiple APIs (and will probably receive more APIs in the future). This client is versioned to match
+the versions of the API.
+
+- The v1 API `/api/v1` will not be supported
+- The v2 API `/api/v2` will be supported by this client. The `main` branch is used for this.
+- Git tags will be used to mark client releases matching to the Squeeze API. If you use Squeeze 2.3.1, you must also
+use the client version 2.3.1.
+
 ## Usage
 
 Add client as dependency:
