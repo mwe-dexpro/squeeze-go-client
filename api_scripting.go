@@ -35,3 +35,27 @@ func (api *ScriptingApi) GetScripts() ([]*ScriptDto, *Error) {
 
 	return data, nil
 }
+
+func (api *ScriptingApi) ExecuteScript(scriptId string, async bool) *Error {
+	req, err := api.client.newRequest("POST", fmt.Sprintf("/scripting/scripts/%s/execute", scriptId))
+	if err != nil {
+		return newErr(err)
+	}
+
+	if async {
+		req.URL.Query().Set("async", "true")
+	} else {
+		req.URL.Query().Set("async", "false")
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return newApiErr(err, res)
+	}
+
+	if res.StatusCode != 204 {
+		return newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	return nil
+}
