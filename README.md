@@ -29,6 +29,13 @@ Add client as dependency:
 go get github.com/dexpro-solutions-gmbh/squeeze-go-client
 ```
 
+### Authentication
+
+Currently, only authentication via API key is supported. We will support for JWT based authentication
+in the future.
+
+```go
+
 ## Tests
 
 To run tests on this project, use these ENV variables to configure the Squeeze API to be used when testing:
