@@ -1,4 +1,4 @@
-package squeeze_go_client
+package internal
 
 import (
 	"fmt"
@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-// getEnvVal either returns the value of the ENV var with the given name or panics if it is not set.
-func getEnvVal(key string) string {
+// GetEnvVal either returns the value of the ENV var with the given name or panics if it is not set.
+func GetEnvVal(key string) string {
 	if val, ok := os.LookupEnv(key); !ok {
 		panic(fmt.Sprintf("environment variable %s is not set", key))
 	} else {
@@ -15,8 +15,8 @@ func getEnvVal(key string) string {
 	}
 }
 
-// getEnvApiKey either returns the value of the ENV var SQZ_KEY or skips the test if it is not set.
-func getEnvApiKey(t *testing.T) string {
+// GetEnvApiKey either returns the value of the ENV var SQZ_KEY or skips the test if it is not set.
+func GetEnvApiKey(t *testing.T) string {
 	if val, ok := os.LookupEnv("SQZ_KEY"); !ok {
 		t.Skip("environment variable SQZ_KEY is not set")
 		return ""
