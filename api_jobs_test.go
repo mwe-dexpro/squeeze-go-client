@@ -6,8 +6,11 @@ import (
 	"testing"
 )
 
-func TestPublicApi_GetHealth(t *testing.T) {
+func TestJobsApi_GetAllJobs(t *testing.T) {
 	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
-	e := c.Public.GetHealth()
+	c.ApiKey = internal.GetEnvApiKey(t)
+	scripts, e := c.Jobs.GetAllJobs()
 	assert.Nil(t, e)
+	assert.NotNil(t, scripts)
+	assert.NotEmpty(t, scripts)
 }

@@ -138,6 +138,22 @@ type DocumentClassDto struct {
 	TranslatedDescription string `json:"translatedDescription"`
 }
 
+type Job struct {
+	Id             int    `json:"id"`
+	Name           string `json:"name"`
+	CronExpression string `json:"cronExpression"`
+	ScriptId       string `json:"scriptId"`
+	Active         bool   `json:"active"`
+}
+
+type ScriptDto struct {
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Type        string `json:"type"`
+	Internal    bool   `json:"internal"`
+}
+
 type QueueStepDto struct {
 	Name       string `json:"name"`
 	Count      int    `json:"count"`

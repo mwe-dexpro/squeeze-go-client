@@ -1,13 +1,14 @@
 package squeeze_go_client
 
 import (
+	"github.com/dexpro-solutions-gmbh/squeeze-go-client/internal"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestDocumentClassApi_GetDocumentClasses(t *testing.T) {
-	c := NewClient(getEnvVal("SQZ_BASE_PATH"))
-	c.ApiKey = getEnvApiKey(t)
+	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = internal.GetEnvApiKey(t)
 	classes, e := c.DocumentClass.GetDocumentClasses()
 	assert.Nil(t, e)
 	assert.NotNil(t, classes)
@@ -15,8 +16,8 @@ func TestDocumentClassApi_GetDocumentClasses(t *testing.T) {
 }
 
 func TestDocumentClassApi_GetAllFieldGroups(t *testing.T) {
-	c := NewClient(getEnvVal("SQZ_BASE_PATH"))
-	c.ApiKey = getEnvApiKey(t)
+	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = internal.GetEnvApiKey(t)
 	classes, e := c.DocumentClass.GetAllFieldGroups(1)
 	assert.Nil(t, e)
 	assert.NotNil(t, classes)
@@ -24,8 +25,8 @@ func TestDocumentClassApi_GetAllFieldGroups(t *testing.T) {
 }
 
 func TestDocumentClassApi_GetAllDocumentClassFields(t *testing.T) {
-	c := NewClient(getEnvVal("SQZ_BASE_PATH"))
-	c.ApiKey = getEnvApiKey(t)
+	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = internal.GetEnvApiKey(t)
 	fields, e := c.DocumentClass.GetAllDocumentClassFields(1)
 	assert.Nil(t, e)
 	assert.NotNil(t, fields)
@@ -34,8 +35,8 @@ func TestDocumentClassApi_GetAllDocumentClassFields(t *testing.T) {
 
 // TestDocumentClassApi_Tables tests multiple endpoints related to tables
 func TestDocumentClassApi_Tables(t *testing.T) {
-	c := NewClient(getEnvVal("SQZ_BASE_PATH"))
-	c.ApiKey = getEnvApiKey(t)
+	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = internal.GetEnvApiKey(t)
 
 	tableId := 0
 
