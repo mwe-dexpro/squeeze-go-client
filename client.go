@@ -18,6 +18,7 @@ type Client struct {
 	DocumentClass *DocumentClassApi
 	Public        *PublicApi
 	Queue         *QueueApi
+	ScriptingApi  *ScriptingApi
 }
 
 func NewClient(basePath string) *Client {
@@ -28,6 +29,7 @@ func NewClient(basePath string) *Client {
 	c.DocumentClass = newDocumentClassApi(c)
 	c.Public = newPublicApi(c)
 	c.Queue = newQueueApi(c)
+	c.ScriptingApi = newScriptingApi(c)
 
 	return c
 }
