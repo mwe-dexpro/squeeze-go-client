@@ -9,6 +9,9 @@ type Client struct {
 	// basePath is the base path of the Squeeze API, example: https://tenant.squeeze.one/api/v2
 	basePath string
 
+	// ApiKey is used to authenticate with Squeeze
+	ApiKey string
+
 	// http is the HTTP client used to make requests
 	http *http.Client
 
@@ -26,5 +29,14 @@ func NewClient(basePath string) *Client {
 }
 
 func (c *Client) newRequest(method string, path string) (*http.Request, error) {
-	return http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), nil)
+	request, err := http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if c.ApiKey != "" {
+		request.Header.Set("X-Api-Key", c.ApiKey)
+	}
+
+	return request, err
 }
