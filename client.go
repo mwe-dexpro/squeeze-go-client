@@ -16,6 +16,7 @@ type Client struct {
 	http *http.Client
 
 	Public *PublicApi
+	Queue  *QueueApi
 }
 
 func NewClient(basePath string) *Client {
@@ -24,6 +25,7 @@ func NewClient(basePath string) *Client {
 	c.http = &http.Client{}
 
 	c.Public = newPublicApi(c)
+	c.Queue = newQueueApi(c)
 
 	return c
 }
