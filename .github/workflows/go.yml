@@ -1,0 +1,30 @@
+# This workflow builds and tests the client.
+# This uses an actual live system and may therefore fail if the test system is not online.
+# For the near future this is fine, as long as it does not cause confusion or block development.
+
+name: Build and test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+      env:
+        SQZ_BASE_PATH: https://terstegen.staging.squeeze.one/api/v2
