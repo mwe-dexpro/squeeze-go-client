@@ -82,80 +82,69 @@ func (api *DocumentClassApi) GetAllFieldGroups(documentClassId int) ([]*Document
 }
 
 type DocumentField struct {
-	Id                    int    `json:"id"`
-	DocumentClassId       int    `json:"documentClassId"`
-	SortOrder             int    `json:"sortOrder"`
-	FieldGroupId          int    `json:"fieldGroupId"`
-	LocatorId             int    `json:"locatorId"`
-	Name                  string `json:"name"`
-	Description           string `json:"description"`
-	DataType              string `json:"dataType"`
-	TranslationKey        string `json:"translationKey"`
-	TranslatedDescription string `json:"translatedDescription"`
-	Value                 struct {
-		Id          int    `json:"id"`
-		Value       string `json:"value"`
-		BoundingBox struct {
-			Page int `json:"page"`
-			X0   int `json:"x0"`
-			Y0   int `json:"y0"`
-			X1   int `json:"x1"`
-			Y1   int `json:"y1"`
-		} `json:"boundingBox"`
-		Alternative  bool     `json:"alternative"`
-		FieldId      int      `json:"fieldId"`
-		Confidence   int      `json:"confidence"`
-		SubFieldName string   `json:"subFieldName"`
-		State        string   `json:"state"`
-		ErrorText    string   `json:"errorText"`
-		Subfields    []string `json:"subfields"`
-	} `json:"value"`
-	DefaultValue            string `json:"defaultValue"`
-	SameLineAsPreviousField bool   `json:"sameLineAsPreviousField"`
-	Alternatives            []struct {
-		Id          int    `json:"id"`
-		Value       string `json:"value"`
-		BoundingBox struct {
-			Page int `json:"page"`
-			X0   int `json:"x0"`
-			Y0   int `json:"y0"`
-			X1   int `json:"x1"`
-			Y1   int `json:"y1"`
-		} `json:"boundingBox"`
-		Alternative  bool     `json:"alternative"`
-		FieldId      int      `json:"fieldId"`
-		Confidence   int      `json:"confidence"`
-		SubFieldName string   `json:"subFieldName"`
-		State        string   `json:"state"`
-		ErrorText    string   `json:"errorText"`
-		Subfields    []string `json:"subfields"`
-	} `json:"alternatives"`
-	SubFieldName    string `json:"subFieldName"`
-	Mandatory       bool   `json:"mandatory"`
-	Readonly        bool   `json:"readonly"`
-	Hidden          bool   `json:"hidden"`
-	ForceValidation bool   `json:"forceValidation"`
-	State           string `json:"state"`
-	ExternalName    string `json:"externalName"`
-	Lookup          struct {
-		Active               bool  `json:"active"`
-		AllowCustomValues    bool  `json:"allowCustomValues"`
-		TableId              int   `json:"tableId"`
-		ResultKeyColumnId    int   `json:"resultKeyColumnId"`
-		SearchColumnIds      []int `json:"searchColumnIds"`
-		ResultValueColumnIds []int `json:"resultValueColumnIds"`
-		LookupFieldFilters   []struct {
-			Id                 int    `json:"id"`
-			DocumentFieldId    int    `json:"documentFieldId"`
-			MasterDataColumnId int    `json:"masterDataColumnId"`
-			Operand            string `json:"operand"`
-			ValueFieldId       int    `json:"valueFieldId"`
-			RowBasedFilter     bool   `json:"rowBasedFilter"`
-		} `json:"lookupFieldFilters"`
-		MinInputLength        int  `json:"minInputLength"`
-		IgnoreInputValue      bool `json:"ignoreInputValue"`
-		MaxLookupResultValues int  `json:"maxLookupResultValues"`
-	} `json:"lookup"`
+	Id                      int                   `json:"id"`
+	DocumentClassId         int                   `json:"documentClassId"`
+	SortOrder               int                   `json:"sortOrder"`
+	FieldGroupId            int                   `json:"fieldGroupId"`
+	LocatorId               int                   `json:"locatorId"`
+	Name                    string                `json:"name"`
+	Description             string                `json:"description"`
+	DataType                string                `json:"dataType"`
+	TranslationKey          string                `json:"translationKey"`
+	TranslatedDescription   string                `json:"translatedDescription"`
+	Value                   *DocumentFieldValue   `json:"value"`
+	DefaultValue            string                `json:"defaultValue"`
+	SameLineAsPreviousField bool                  `json:"sameLineAsPreviousField"`
+	Alternatives            []*DocumentFieldValue `json:"alternatives"`
+	SubFieldName            string                `json:"subFieldName"`
+	Mandatory               bool                  `json:"mandatory"`
+	Readonly                bool                  `json:"readonly"`
+	Hidden                  bool                  `json:"hidden"`
+	ForceValidation         bool                  `json:"forceValidation"`
+	State                   string                `json:"state"`
+	ExternalName            string                `json:"externalName"`
+	Lookup                  *LookupDefinition     `json:"lookup"`
+}
+
+type DocumentFieldValue struct {
+	Id           int          `json:"id"`
+	Value        string       `json:"value"`
+	BoundingBox  *BoundingBox `json:"boundingBox"`
+	Alternative  bool         `json:"alternative"`
+	FieldId      int          `json:"fieldId"`
+	Confidence   int          `json:"confidence"`
+	SubFieldName string       `json:"subFieldName"`
+	State        string       `json:"state"`
+	ErrorText    string       `json:"errorText"`
+	Subfields    []string     `json:"subfields"`
+}
+
+type LookupDefinition struct {
+	Active               bool  `json:"active"`
+	AllowCustomValues    bool  `json:"allowCustomValues"`
+	TableId              int   `json:"tableId"`
+	ResultKeyColumnId    int   `json:"resultKeyColumnId"`
+	SearchColumnIds      []int `json:"searchColumnIds"`
+	ResultValueColumnIds []int `json:"resultValueColumnIds"`
+	LookupFieldFilters   []struct {
+		Id                 int    `json:"id"`
+		DocumentFieldId    int    `json:"documentFieldId"`
+		MasterDataColumnId int    `json:"masterDataColumnId"`
+		Operand            string `json:"operand"`
+		ValueFieldId       int    `json:"valueFieldId"`
+		RowBasedFilter     bool   `json:"rowBasedFilter"`
+	} `json:"lookupFieldFilters"`
+	MinInputLength        int  `json:"minInputLength"`
+	IgnoreInputValue      bool `json:"ignoreInputValue"`
+	MaxLookupResultValues int  `json:"maxLookupResultValues"`
+}
+
+type BoundingBox struct {
+	Page int `json:"page"`
+	X0   int `json:"x0"`
+	Y0   int `json:"y0"`
+	X1   int `json:"x1"`
+	Y1   int `json:"y1"`
 }
 
 func (api *DocumentClassApi) GetAllDocumentClassFields(documentClassId int) ([]*DocumentField, *Error) {
