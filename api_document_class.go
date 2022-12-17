@@ -169,3 +169,99 @@ func (api *DocumentClassApi) GetAllDocumentClassFields(documentClassId int) ([]*
 
 	return data, nil
 }
+
+type DocumentTable struct {
+	Id              int `json:"id"`
+	DocumentClassId int `json:"documentClassId"`
+	// removed because not actively being used
+	// FieldGroupId    int    `json:"fieldGroupId"`
+	LocatorId             int                    `json:"locatorId"`
+	Name                  string                 `json:"name"`
+	Description           string                 `json:"description"`
+	Mandatory             bool                   `json:"mandatory"`
+	Readonly              bool                   `json:"readonly"`
+	Hidden                bool                   `json:"hidden"`
+	ForceValidation       bool                   `json:"forceValidation"`
+	ExternalName          string                 `json:"externalName"`
+	Columns               []*DocumentTableColumn `json:"columns"`
+	Rows                  []*DocumentTableRow    `json:"rows"`
+	State                 string                 `json:"state"`
+	ErrorText             string                 `json:"errorText"`
+	ErrorCode             int                    `json:"errorCode"`
+	TableBehaviour        string                 `json:"tableBehaviour"`
+	TranslationKey        string                 `json:"translationKey"`
+	TranslatedDescription string                 `json:"translatedDescription"`
+}
+
+type DocumentTableColumn struct {
+	Id                    int               `json:"id"`
+	SortOrder             int               `json:"sortOrder"`
+	TableId               int               `json:"tableId"`
+	HeaderLocatorId       int               `json:"headerLocatorId"`
+	ValueLocatorId        int               `json:"valueLocatorId"`
+	Name                  string            `json:"name"`
+	Description           string            `json:"description"`
+	DataType              string            `json:"dataType"`
+	Mandatory             bool              `json:"mandatory"`
+	Readonly              bool              `json:"readonly"`
+	Hidden                bool              `json:"hidden"`
+	ForceValidation       bool              `json:"forceValidation"`
+	ExternalName          string            `json:"externalName"`
+	Lookup                *LookupDefinition `json:"lookup"`
+	TranslationKey        string            `json:"translationKey"`
+	TranslatedDescription string            `json:"translatedDescription"`
+}
+
+type DocumentTableRow struct {
+	Value     *DocumentFieldValue `json:"value"`
+	Cells     []string            `json:"cells"`
+	State     string              `json:"state"`
+	ErrorText string              `json:"errorText"`
+	ErrorCode int                 `json:"errorCode"`
+}
+
+func (api *DocumentClassApi) GetAllDocumentClassTables(documentClassId int) ([]*DocumentTable, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables", documentClassId))
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data []*DocumentTable
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return data, nil
+}
+
+func (api *DocumentClassApi) GetAllDocumentClassTableColumns(documentClassId int, tableId int) ([]*DocumentTableColumn, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables/%d/columns", documentClassId, tableId))
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data []*DocumentTableColumn
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return data, nil
+}
