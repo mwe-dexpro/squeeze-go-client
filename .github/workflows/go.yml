@@ -28,3 +28,4 @@ jobs:
       run: go test -v ./...
       env:
         SQZ_BASE_PATH: ${{ secrets.SQZ_BASE_PATH }}
+        SQZ_KEY: ${{ secrets.SQZ_KEY }}
