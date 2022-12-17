@@ -13,3 +13,13 @@ func TestQueueApi_GetQueueSteps(t *testing.T) {
 	assert.NotNil(t, steps)
 	assert.NotEmpty(t, steps)
 }
+
+func TestQueueApi_GetQueueStep(t *testing.T) {
+	c := NewClient(getEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = getEnvApiKey(t)
+	step, e := c.Queue.GetQueueStep("Validation")
+	assert.Nil(t, e)
+	assert.NotNil(t, step)
+	assert.NotEmpty(t, step)
+	assert.Equal(t, "Validation", step.Name)
+}
