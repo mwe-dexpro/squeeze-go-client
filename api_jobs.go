@@ -14,7 +14,7 @@ func newJobsApi(client *Client) *JobsApi {
 }
 
 func (api *JobsApi) GetAllJobs() ([]*Job, *Error) {
-	req, err := api.client.newRequest("GET", "/jobs")
+	req, err := api.client.newRequest("GET", "/jobs", nil)
 	if err != nil {
 		return nil, newErr(err)
 	}

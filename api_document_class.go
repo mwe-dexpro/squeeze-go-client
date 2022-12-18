@@ -14,7 +14,7 @@ func newDocumentClassApi(client *Client) *DocumentClassApi {
 }
 
 func (api *DocumentClassApi) GetDocumentClasses() ([]*DocumentClassDto, *Error) {
-	req, err := api.client.newRequest("GET", "/documentClasses")
+	req, err := api.client.newRequest("GET", "/documentClasses", nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -37,7 +37,7 @@ func (api *DocumentClassApi) GetDocumentClasses() ([]*DocumentClassDto, *Error) 
 }
 
 func (api *DocumentClassApi) GetAllFieldGroups(documentClassId int) ([]*DocumentFieldGroup, *Error) {
-	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/fieldGroups", documentClassId))
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/fieldGroups", documentClassId), nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -59,7 +59,7 @@ func (api *DocumentClassApi) GetAllFieldGroups(documentClassId int) ([]*Document
 	return data, nil
 }
 func (api *DocumentClassApi) GetAllDocumentClassFields(documentClassId int) ([]*DocumentField, *Error) {
-	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/fields", documentClassId))
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/fields", documentClassId), nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -82,7 +82,7 @@ func (api *DocumentClassApi) GetAllDocumentClassFields(documentClassId int) ([]*
 }
 
 func (api *DocumentClassApi) GetAllDocumentClassTables(documentClassId int) ([]*DocumentTable, *Error) {
-	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables", documentClassId))
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables", documentClassId), nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -105,7 +105,7 @@ func (api *DocumentClassApi) GetAllDocumentClassTables(documentClassId int) ([]*
 }
 
 func (api *DocumentClassApi) GetAllDocumentClassTableColumns(documentClassId int, tableId int) ([]*DocumentTableColumn, *Error) {
-	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables/%d/columns", documentClassId, tableId))
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documentClasses/%d/tables/%d/columns", documentClassId, tableId), nil)
 	if err != nil {
 		return nil, newErr(err)
 	}

@@ -14,7 +14,7 @@ func newScriptingApi(client *Client) *ScriptingApi {
 }
 
 func (api *ScriptingApi) GetScripts() ([]*ScriptDto, *Error) {
-	req, err := api.client.newRequest("GET", "/scripting/scripts")
+	req, err := api.client.newRequest("GET", "/scripting/scripts", nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -37,7 +37,7 @@ func (api *ScriptingApi) GetScripts() ([]*ScriptDto, *Error) {
 }
 
 func (api *ScriptingApi) ExecuteScript(scriptId string, async bool) *Error {
-	req, err := api.client.newRequest("POST", fmt.Sprintf("/scripting/scripts/%s/execute", scriptId))
+	req, err := api.client.newRequest("POST", fmt.Sprintf("/scripting/scripts/%s/execute", scriptId), nil)
 	if err != nil {
 		return newErr(err)
 	}

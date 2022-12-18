@@ -2,6 +2,7 @@ package squeeze_go_client
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -36,8 +37,8 @@ func NewClient(basePath string) *Client {
 	return c
 }
 
-func (c *Client) newRequest(method string, path string) (*http.Request, error) {
-	request, err := http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), nil)
+func (c *Client) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
+	request, err := http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), body)
 	if err != nil {
 		return nil, err
 	}
