@@ -194,6 +194,12 @@ type ScriptDto struct {
 	Internal    bool   `json:"internal"`
 }
 
+type QueueEntryDto struct {
+	Id              int              `json:"id"`
+	DocumentId      int              `json:"documentId"`
+	WorkflowContext *WorkflowContext `json:"workflowContext"`
+}
+
 type QueueStepDto struct {
 	Name        string                 `json:"name"`
 	Count       int                    `json:"count"`
@@ -224,4 +230,15 @@ type WorkflowContext struct {
 	SuspendedTs time.Time `json:"suspendedTs"`
 	ExportedBy  int       `json:"exportedBy"`
 	ExportedTs  time.Time `json:"exportedTs"`
+}
+
+type PaginationDto struct {
+	PageSize int `json:"pageSize"`
+	Page     int `json:"page"`
+	Total    int `json:"total"`
+}
+
+type PaginationResponse[T any] struct {
+	Pagination *PaginationDto `json:"pagination"`
+	Elements   []T            `json:"elements"`
 }
