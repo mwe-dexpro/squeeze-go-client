@@ -87,3 +87,26 @@ func (api *DocumentApi) ProcessDocument(batchClassId, documentClassId int, exter
 
 	return &data, nil
 }
+
+func (api *DocumentApi) GetDocumentById(id int) (*Document, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documents/%d", id), nil)
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data Document
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return &data, nil
+}
