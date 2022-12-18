@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
 )
 
 type QueueApi struct {
@@ -105,4 +106,30 @@ func (api *QueueApi) GetQueueStepEntriesSimple(stepName string, status string, d
 	}
 
 	return &data, nil
+}
+
+func (api *QueueApi) RequeueDocument(documentId int, documentClassId int, newStepName string) *Error {
+	query := url.Values{}
+	if documentClassId != 0 {
+		query.Add("documentClassId", strconv.Itoa(documentClassId))
+	}
+	query.Add("newStep", newStepName)
+
+	path := fmt.Sprintf("/documents/%d/requeue?%s", documentId, query.Encode())
+
+	req, err := api.client.newRequest("PUT", path, nil)
+	if err != nil {
+		return newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return newApiErr(err, res)
+	}
+
+	if res.StatusCode != 204 {
+		return newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	return nil
 }
