@@ -194,6 +194,12 @@ type ScriptDto struct {
 	Internal    bool   `json:"internal"`
 }
 
+type QueueEntryDto struct {
+	Id              int              `json:"id"`
+	DocumentId      int              `json:"documentId"`
+	WorkflowContext *WorkflowContext `json:"workflowContext"`
+}
+
 type QueueStepDto struct {
 	Name        string                 `json:"name"`
 	Count       int                    `json:"count"`

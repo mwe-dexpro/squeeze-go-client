@@ -25,3 +25,14 @@ func TestQueueApi_GetQueueStep(t *testing.T) {
 	assert.Equal(t, "Validation", step.Name)
 	assert.NotEmpty(t, step.StepDetails)
 }
+
+func TestQueueApi_GetQueueStepEntriesSimple(t *testing.T) {
+	c := NewClient(internal.GetEnvVal("SQZ_BASE_PATH"))
+	c.ApiKey = internal.GetEnvApiKey(t)
+	response, e := c.Queue.GetQueueStepEntriesSimple("Validation", "", 0, 0, 1, 25)
+	assert.Nil(t, e)
+	assert.NotNil(t, response)
+
+	assert.Equal(t, 25, response.Pagination.PageSize)
+	assert.NotNil(t, response.Elements)
+}

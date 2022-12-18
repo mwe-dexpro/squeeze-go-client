@@ -3,6 +3,7 @@ package squeeze_go_client
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 )
 
 type QueueApi struct {
@@ -52,6 +53,53 @@ func (api *QueueApi) GetQueueStep(stepName string) (*QueueStepDto, *Error) {
 	}
 
 	var data QueueStepDto
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return &data, nil
+}
+
+// GetQueueStepEntriesSimple is a simple implementation of a GET /queue/steps/{stepName}/entries request with support only for the most common parameters.
+func (api *QueueApi) GetQueueStepEntriesSimple(stepName string, status string, documentClassId int, batchClassId int, page int, pageSize int) (*PaginationResponse[*QueueEntryDto], *Error) {
+	query := url.Values{}
+	if status != "" {
+		query.Add("status", status)
+	}
+	if documentClassId != 0 {
+		query.Add("documentClassId", fmt.Sprintf("%d", documentClassId))
+	}
+	if batchClassId != 0 {
+		query.Add("batchClassId", fmt.Sprintf("%d", batchClassId))
+	}
+	if page != 0 {
+		query.Add("page", fmt.Sprintf("%d", page))
+	}
+	if pageSize != 0 {
+		query.Add("pageSize", fmt.Sprintf("%d", pageSize))
+	}
+
+	path := fmt.Sprintf("/queue/steps/%s/entries", stepName)
+	queryStr := query.Encode()
+	if queryStr != "" {
+		path = path + "?" + queryStr
+	}
+
+	req, err := api.client.newRequest("GET", path, nil)
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data PaginationResponse[*QueueEntryDto]
 	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
 		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
 	}
