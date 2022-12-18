@@ -134,11 +134,24 @@ type DocumentTableColumn struct {
 }
 
 type DocumentTableRow struct {
-	Value     *DocumentFieldValue `json:"value"`
-	Cells     []string            `json:"cells"`
-	State     string              `json:"state"`
-	ErrorText string              `json:"errorText"`
-	ErrorCode int                 `json:"errorCode"`
+	Value     *DocumentFieldValue  `json:"value"`
+	Cells     []*DocumentTableCell `json:"cells"`
+	State     string               `json:"state"`
+	ErrorText string               `json:"errorText"`
+	ErrorCode int                  `json:"errorCode"`
+}
+
+type DocumentTableCell struct {
+	Id          int          `json:"id"`
+	ColumnId    int          `json:"columnId"`
+	ColumnName  string       `json:"columnName"`
+	Value       string       `json:"value"`
+	RowId       int          `json:"rowId"`
+	BoundingBox *BoundingBox `json:"boundingBox"`
+	Confidence  int          `json:"confidence"`
+	State       string       `json:"state"`
+	ErrorText   string       `json:"errorText"`
+	ErrorCode   int          `json:"errorCode"`
 }
 
 type DocumentFieldGroup struct {
