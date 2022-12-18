@@ -1,5 +1,7 @@
 package squeeze_go_client
 
+import "time"
+
 type BoundingBox struct {
 	Page int `json:"page"`
 	X0   int `json:"x0"`
@@ -10,6 +12,25 @@ type BoundingBox struct {
 
 type CreatedIntDto struct {
 	Id int `json:"id"`
+}
+
+type Document struct {
+	Id              int                   `json:"id"`
+	Name            string                `json:"name"`
+	RepoPath        string                `json:"repoPath"`
+	BatchClassId    int                   `json:"batchClassId"`
+	DocumentClassId int                   `json:"documentClassId"`
+	ExternalId      string                `json:"externalId"`
+	CreatedBy       int                   `json:"createdBy"`
+	CreatedAt       time.Time             `json:"createdAt"`
+	ModifiedBy      int                   `json:"modifiedBy"`
+	ModifiedAt      time.Time             `json:"modifiedAt"`
+	DeletedBy       int                   `json:"deletedBy"`
+	DeletedTs       time.Time             `json:"deletedTs"`
+	WorkflowContext *WorkflowContext      `json:"workflowContext"`
+	FieldGroups     []*DocumentFieldGroup `json:"fieldGroups"`
+	Fields          []*DocumentField      `json:"fields"`
+	Tables          []*DocumentTable      `json:"tables"`
 }
 
 type DocumentField struct {
@@ -162,4 +183,23 @@ type QueueStepDto struct {
 	Name       string `json:"name"`
 	Count      int    `json:"count"`
 	ErrorCount int    `json:"errorCount"`
+}
+
+type WorkflowContext struct {
+	Status      string    `json:"status"`
+	Step        string    `json:"step"`
+	CreatedTs   time.Time `json:"createdTs"`
+	ModifiedTs  time.Time `json:"modifiedTs"`
+	Priority    int       `json:"priority"`
+	Creator     string    `json:"creator"`
+	Receiver    string    `json:"receiver"`
+	ErrorText   string    `json:"errorText"`
+	LockedBy    int       `json:"lockedBy"`
+	LockedTs    time.Time `json:"lockedTs"`
+	ValidatedBy int       `json:"validatedBy"`
+	ValidatedTs time.Time `json:"validatedTs"`
+	SuspendedBy int       `json:"suspendedBy"`
+	SuspendedTs time.Time `json:"suspendedTs"`
+	ExportedBy  int       `json:"exportedBy"`
+	ExportedTs  time.Time `json:"exportedTs"`
 }
