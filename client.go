@@ -2,6 +2,7 @@ package squeeze_go_client
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -15,6 +16,7 @@ type Client struct {
 	// http is the HTTP client used to make requests
 	http *http.Client
 
+	Document      *DocumentApi
 	DocumentClass *DocumentClassApi
 	Jobs          *JobsApi
 	Public        *PublicApi
@@ -27,6 +29,7 @@ func NewClient(basePath string) *Client {
 
 	c.http = &http.Client{}
 
+	c.Document = newDocumentApi(c)
 	c.DocumentClass = newDocumentClassApi(c)
 	c.Jobs = newJobsApi(c)
 	c.Public = newPublicApi(c)
@@ -36,8 +39,8 @@ func NewClient(basePath string) *Client {
 	return c
 }
 
-func (c *Client) newRequest(method string, path string) (*http.Request, error) {
-	request, err := http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), nil)
+func (c *Client) newRequest(method string, path string, body io.Reader) (*http.Request, error) {
+	request, err := http.NewRequest(method, fmt.Sprintf("%s%s", c.basePath, path), body)
 	if err != nil {
 		return nil, err
 	}

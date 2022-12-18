@@ -1,11 +1,36 @@
 package squeeze_go_client
 
+import "time"
+
 type BoundingBox struct {
 	Page int `json:"page"`
 	X0   int `json:"x0"`
 	Y0   int `json:"y0"`
 	X1   int `json:"x1"`
 	Y1   int `json:"y1"`
+}
+
+type CreatedIntDto struct {
+	Id int `json:"id"`
+}
+
+type Document struct {
+	Id              int                   `json:"id"`
+	Name            string                `json:"name"`
+	RepoPath        string                `json:"repoPath"`
+	BatchClassId    int                   `json:"batchClassId"`
+	DocumentClassId int                   `json:"documentClassId"`
+	ExternalId      string                `json:"externalId"`
+	CreatedBy       int                   `json:"createdBy"`
+	CreatedAt       time.Time             `json:"createdAt"`
+	ModifiedBy      int                   `json:"modifiedBy"`
+	ModifiedAt      time.Time             `json:"modifiedAt"`
+	DeletedBy       int                   `json:"deletedBy"`
+	DeletedTs       time.Time             `json:"deletedTs"`
+	WorkflowContext *WorkflowContext      `json:"workflowContext"`
+	FieldGroups     []*DocumentFieldGroup `json:"fieldGroups"`
+	Fields          []*DocumentField      `json:"fields"`
+	Tables          []*DocumentTable      `json:"tables"`
 }
 
 type DocumentField struct {
@@ -109,11 +134,24 @@ type DocumentTableColumn struct {
 }
 
 type DocumentTableRow struct {
-	Value     *DocumentFieldValue `json:"value"`
-	Cells     []string            `json:"cells"`
-	State     string              `json:"state"`
-	ErrorText string              `json:"errorText"`
-	ErrorCode int                 `json:"errorCode"`
+	Value     *DocumentFieldValue  `json:"value"`
+	Cells     []*DocumentTableCell `json:"cells"`
+	State     string               `json:"state"`
+	ErrorText string               `json:"errorText"`
+	ErrorCode int                  `json:"errorCode"`
+}
+
+type DocumentTableCell struct {
+	Id          int          `json:"id"`
+	ColumnId    int          `json:"columnId"`
+	ColumnName  string       `json:"columnName"`
+	Value       string       `json:"value"`
+	RowId       int          `json:"rowId"`
+	BoundingBox *BoundingBox `json:"boundingBox"`
+	Confidence  int          `json:"confidence"`
+	State       string       `json:"state"`
+	ErrorText   string       `json:"errorText"`
+	ErrorCode   int          `json:"errorCode"`
 }
 
 type DocumentFieldGroup struct {
@@ -158,4 +196,23 @@ type QueueStepDto struct {
 	Name       string `json:"name"`
 	Count      int    `json:"count"`
 	ErrorCount int    `json:"errorCount"`
+}
+
+type WorkflowContext struct {
+	Status      string    `json:"status"`
+	Step        string    `json:"step"`
+	CreatedTs   time.Time `json:"createdTs"`
+	ModifiedTs  time.Time `json:"modifiedTs"`
+	Priority    int       `json:"priority"`
+	Creator     string    `json:"creator"`
+	Receiver    string    `json:"receiver"`
+	ErrorText   string    `json:"errorText"`
+	LockedBy    int       `json:"lockedBy"`
+	LockedTs    time.Time `json:"lockedTs"`
+	ValidatedBy int       `json:"validatedBy"`
+	ValidatedTs time.Time `json:"validatedTs"`
+	SuspendedBy int       `json:"suspendedBy"`
+	SuspendedTs time.Time `json:"suspendedTs"`
+	ExportedBy  int       `json:"exportedBy"`
+	ExportedTs  time.Time `json:"exportedTs"`
 }

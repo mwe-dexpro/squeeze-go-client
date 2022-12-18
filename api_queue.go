@@ -14,7 +14,7 @@ func newQueueApi(client *Client) *QueueApi {
 }
 
 func (api *QueueApi) GetQueueSteps() (map[string]*QueueStepDto, *Error) {
-	req, err := api.client.newRequest("GET", "/queue/steps")
+	req, err := api.client.newRequest("GET", "/queue/steps", nil)
 	if err != nil {
 		return nil, newErr(err)
 	}
@@ -37,7 +37,7 @@ func (api *QueueApi) GetQueueSteps() (map[string]*QueueStepDto, *Error) {
 }
 
 func (api *QueueApi) GetQueueStep(stepName string) (*QueueStepDto, *Error) {
-	req, err := api.client.newRequest("GET", fmt.Sprintf("/queue/steps/%s", stepName))
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/queue/steps/%s", stepName), nil)
 	if err != nil {
 		return nil, newErr(err)
 	}

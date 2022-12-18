@@ -13,7 +13,7 @@ func newPublicApi(client *Client) *PublicApi {
 }
 
 func (api *PublicApi) GetHealth() *Error {
-	req, err := api.client.newRequest("GET", "/public/system/health")
+	req, err := api.client.newRequest("GET", "/public/system/health", nil)
 	if err != nil {
 		return newErr(err)
 	}
