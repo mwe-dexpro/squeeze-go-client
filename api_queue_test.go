@@ -23,4 +23,5 @@ func TestQueueApi_GetQueueStep(t *testing.T) {
 	assert.NotNil(t, step)
 	assert.NotEmpty(t, step)
 	assert.Equal(t, "Validation", step.Name)
+	assert.NotEmpty(t, step.StepDetails)
 }

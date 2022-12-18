@@ -176,6 +176,8 @@ type DocumentClassDto struct {
 	TranslatedDescription string `json:"translatedDescription"`
 }
 
+type DocumentClass = DocumentClassDto
+
 type Job struct {
 	Id             int    `json:"id"`
 	Name           string `json:"name"`
@@ -193,9 +195,16 @@ type ScriptDto struct {
 }
 
 type QueueStepDto struct {
-	Name       string `json:"name"`
-	Count      int    `json:"count"`
-	ErrorCount int    `json:"errorCount"`
+	Name        string                 `json:"name"`
+	Count       int                    `json:"count"`
+	ErrorCount  int                    `json:"errorCount"`
+	StepDetails []*QueueStepDetailsDto `json:"stepDetails"`
+}
+
+type QueueStepDetailsDto struct {
+	DocumentClass *DocumentClass `json:"documentClass"`
+	Count         int            `json:"count"`
+	ErrorCount    int            `json:"errorCount"`
 }
 
 type WorkflowContext struct {
