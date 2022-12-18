@@ -225,3 +225,14 @@ type WorkflowContext struct {
 	ExportedBy  int       `json:"exportedBy"`
 	ExportedTs  time.Time `json:"exportedTs"`
 }
+
+type PaginationDto struct {
+	PageSize int `json:"pageSize"`
+	Page     int `json:"page"`
+	Total    int `json:"total"`
+}
+
+type PaginationResponse[T any] struct {
+	Pagination *PaginationDto `json:"pagination"`
+	Elements   []T            `json:"elements"`
+}
