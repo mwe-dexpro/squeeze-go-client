@@ -16,6 +16,7 @@ type Client struct {
 	// http is the HTTP client used to make requests
 	http *http.Client
 
+	Document      *DocumentApi
 	DocumentClass *DocumentClassApi
 	Jobs          *JobsApi
 	Public        *PublicApi
@@ -28,6 +29,7 @@ func NewClient(basePath string) *Client {
 
 	c.http = &http.Client{}
 
+	c.Document = newDocumentApi(c)
 	c.DocumentClass = newDocumentClassApi(c)
 	c.Jobs = newJobsApi(c)
 	c.Public = newPublicApi(c)

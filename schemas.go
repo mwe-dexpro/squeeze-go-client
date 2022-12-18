@@ -8,6 +8,10 @@ type BoundingBox struct {
 	Y1   int `json:"y1"`
 }
 
+type CreatedIntDto struct {
+	Id int `json:"id"`
+}
+
 type DocumentField struct {
 	Id                      int                   `json:"id"`
 	DocumentClassId         int                   `json:"documentClassId"`
