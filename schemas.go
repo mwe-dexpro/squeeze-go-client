@@ -242,3 +242,36 @@ type PaginationResponse[T any] struct {
 	Pagination *PaginationDto `json:"pagination"`
 	Elements   []T            `json:"elements"`
 }
+
+type ExportStatus struct {
+	Id            int    `json:"id"`
+	DocumentId    int    `json:"documentId"`
+	InterfaceId   int    `json:"interfaceId"`
+	InterfaceName string `json:"interfaceName"`
+	Status        string `json:"status"`
+	Result        string `json:"result"`
+	Timestamp     string `json:"timestamp"`
+	UserId        int    `json:"userId"`
+	UserName      string `json:"userName"`
+}
+
+type DocumentRefDto struct {
+	DocumentId      int `json:"documentId"`
+	QueueEntryId    int `json:"queueEntryId"`
+	BatchClassId    int `json:"batchClassId"`
+	DocumentClassId int `json:"documentClassId"`
+}
+
+type FileDto struct {
+	Id              int      `json:"id"`
+	FileName        string   `json:"fileName"`
+	Extension       string   `json:"extension"`
+	MimeType        string   `json:"mimeType"`
+	Base64          string   `json:"base64"`
+	OriginFileNames []string `json:"originFileNames"`
+	IsOriginFile    bool     `json:"isOriginFile"`
+}
+
+type SetDocumentExportStatusRequest struct {
+	NewState string `json:"newState"`
+}

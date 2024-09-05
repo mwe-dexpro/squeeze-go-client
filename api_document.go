@@ -110,3 +110,98 @@ func (api *DocumentApi) GetDocumentById(id int) (*Document, *Error) {
 
 	return &data, nil
 }
+
+func (api *DocumentApi) GetDocumentAttachments(id int, includeResultPdf bool, includeBase64 bool) (*[]FileDto, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documents/%d/attachments", id), nil)
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	// Get the query parameters
+	query := req.URL.Query()
+
+	if includeResultPdf {
+		query.Set("includeResultPdf", "true")
+	} else {
+		query.Set("includeResultPdf", "false")
+	}
+
+	if includeBase64 {
+		query.Set("includeBase64", "true")
+	} else {
+		query.Set("includeBase64", "false")
+	}
+
+	// Encode the modified query parameters back to the URL
+	req.URL.RawQuery = query.Encode()
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	var data *[]FileDto
+	if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
+		return nil, newApiErr(fmt.Errorf("unmarshaling json failed: %s", err), res)
+	}
+
+	return data, nil
+}
+
+func (api *DocumentApi) GetDocumentAttachment(id int, attachmentId int) ([]byte, *Error) {
+	req, err := api.client.newRequest("GET", fmt.Sprintf("/documents/%d/attachments/%d/file", id, attachmentId), nil)
+	if err != nil {
+		return nil, newErr(err)
+	}
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return nil, newApiErr(err, res)
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return nil, newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	// Read the response body
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, newApiErr(fmt.Errorf("reading response body failed: %s", err), res)
+	}
+
+	return data, nil
+}
+
+func (api *DocumentApi) SetDocumentExportStatus(id int, interfaceId int, newState string) *Error {
+	requestBody := SetDocumentExportStatusRequest{
+		NewState: newState,
+	}
+
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		return newErr(err)
+	}
+
+	req, err := api.client.newRequest("POST", fmt.Sprintf("/documents/%d/exportInterfaces/%d/status", id, interfaceId), bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return newErr(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	res, err := api.client.http.Do(req)
+	if err != nil {
+		return newApiErr(err, res)
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != 204 {
+		return newApiErr(fmt.Errorf("unexpected status code: %d", res.StatusCode), res)
+	}
+
+	return nil
+}
